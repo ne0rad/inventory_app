@@ -1,5 +1,5 @@
 body {
-  font: 14px sans-serif;
+  font-family: sans-serif;
   display: flex;
   background-color: #e0e0e0;
   padding: 0;
@@ -26,7 +26,6 @@ a {
 
 .menu-list {
   list-style: none;
-  text-align: center;
   padding: 0;
 }
 
