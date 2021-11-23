@@ -4,4 +4,21 @@ html
     title= title
     link(rel='stylesheet', href='/stylesheets/style.css')
   body
-    block content
+    div#side-nav
+      ul.menu-list
+        li.menu-item
+          a.menu-link(href="/") Home
+        hr
+        li.menu-item
+          a.menu-link(href="/categories") Categories
+        li.menu-item
+          a.menu-link(href="/instances") In-Stock
+        hr
+        li.menu-item
+          a.menu-link(href="/newItem") New Item
+        li.menu-item
+          a.menu-link(href="/newCategory") New Category
+        li.menu-item
+          a.menu-link(href="/newInstance") New Stock
+    div#content
+      block content
