@@ -1,13 +1,24 @@
 var createError = require('http-errors');
 var express = require('express');
+var helmet = require('helmet');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+require('dotenv').config();
 
 var indexRouter = require('./routes/index');
 var inventoryRouter = require('./routes/inventory');
 
 var app = express();
+app.use(helmet());
+
+//Set up mongoose connection
+var mongoose = require('mongoose');
+var dev_db_url = 'mongodb://127.0.0.1/inventory_app';
+var mongoDB = process.env.MONGODB_URI || dev_db_url;
+mongoose.connect(mongoDB, { useNewUrlParser: true , useUnifiedTopology: true});
+var db = mongoose.connection;
+db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

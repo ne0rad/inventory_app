@@ -6,10 +6,16 @@
     "start": "node ./bin/www"
   },
   "dependencies": {
+    "async": "^3.2.2",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
+    "dotenv": "^10.0.0",
     "express": "~4.16.1",
+    "express-validator": "^6.13.0",
+    "helmet": "^4.6.0",
     "http-errors": "~1.6.3",
+    "mongodb": "^4.2.0",
+    "mongoose": "^6.0.13",
     "morgan": "~1.9.1",
     "pug": "^3.0.2"
   }
