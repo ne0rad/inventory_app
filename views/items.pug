@@ -8,5 +8,10 @@ block content
         p Error getting data 
     else 
         ul
-            each item in data.all_items 
-                li #[strong !{item.name}] (£!{item.price})
+            each item in data 
+                li #[strong !{item.name}] (£!{item.price}) [
+                    each category, index in item.category
+                        span  !{category.name}
+                        if index < item.category.length-1
+                            | ,
+                    |  ]

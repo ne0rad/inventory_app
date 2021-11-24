@@ -1,0 +1,23 @@
+extends layout
+
+block content 
+    h1=title 
+    h2 Create New Item 
+
+    form(action="/inventory/newItem", method="post")
+        label(for="name") Name:
+        br
+        input#name(type="text", name="name" placeholder="Item name")
+        br
+        br
+        label(for="description") Description:
+        br
+        input#description(type="text", name="description" placeholder="Description of an item")
+        br
+        br
+        label(for="price") Price:
+        br
+        input#price(type="number", name="price" placeholder="Price (e.g. 42.99)")
+        br
+        br
+        input(type="submit", value="Submit")
