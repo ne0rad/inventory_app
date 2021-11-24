@@ -1,9 +1,12 @@
 extends layout
 
 block content
-    h1 Categories
+    h1=title
     h2 All Categories
-    ul
-        li Category One
-        li Category Two
+    if error
+        p Error getting categories
+    else
+        ul
+            each category in data.all_categories
+                li !{category.name}
     

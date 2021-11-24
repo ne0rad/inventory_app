@@ -1,0 +1,12 @@
+extends layout
+
+block content 
+    h1=title 
+    h2 All items 
+    
+    if error 
+        p Error getting data 
+    else 
+        ul
+            each item in data.all_items 
+                li #[strong !{item.name}] (£!{item.price})
