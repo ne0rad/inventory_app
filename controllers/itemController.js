@@ -5,6 +5,7 @@ const { body, validationResult } = require('express-validator');
 
 exports.all_items = function (req, res, next) {
     Item.find({})
+        .sort('name')
         .populate('category')
         .exec(function (err, result) {
             res.render('items', { title: 'Items', error: err, data: result });
@@ -15,7 +16,7 @@ exports.new_item_get = function (req, res, next) {
     Category.find({})
         .exec(function (err, result) {
             if (err) return next(err);
-            res.render('newItem', { title: 'New Item', categories: result });
+            res.render('new_item', { title: 'New Item', categories: result });
         });
 }
 
@@ -35,6 +36,7 @@ exports.new_item_post = [
     body('description', 'Description required').trim().isLength({ min: 1 }).escape(),
     body('price', 'Price required').trim().isLength({ min: 1 }).escape(),
     body('price', 'Price has to be a number').isNumeric(),
+    body('category', 'At least one category required').isLength({ min: 1 }),
     body('category.*').escape(),
     (req, res, next) => {
         const errors = validationResult(req);
@@ -53,7 +55,7 @@ exports.new_item_post = [
                 .exec(function (err, result) {
                     if (err) { return next(err) }
 
-                    res.render('newItem', { title: 'New Item', data: item, categories: result, errors: errors.array() });
+                    res.render('new_item', { title: 'New Item', data: item, categories: result, errors: errors.array() });
                 });
             return;
         } else {
@@ -64,3 +66,18 @@ exports.new_item_post = [
         }
     }
 ];
+
+exports.item_details = function (req, res, next) {
+    Item.findById(req.params.id)
+        .populate('category')
+        .exec(function (err, results) {
+            if (err) { return next(err); }
+            if (results == null) { // No results.
+                var err = new Error('Item not found');
+                err.status = 404;
+                return next(err);
+            }
+            // Successful, so render.
+            res.render('item_details', { title: results.name, item: results });
+        });
+}

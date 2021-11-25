@@ -9,9 +9,11 @@ block content
     else 
         ul
             each item in data 
-                li #[strong !{item.name}] (£!{item.price}) [
+                li 
+                    a(href!=item.url) !{item.name}
+                    |  (£!{item.price}) [ 
                     each category, index in item.category
-                        span  !{category.name}
+                        a(href!=category.url) !{category.name}
                         if index < item.category.length-1
-                            | ,
+                            | , 
                     |  ]

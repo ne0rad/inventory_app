@@ -8,5 +8,6 @@ block content
     else
         ul
             each category in data.all_categories
-                li !{category.name}
+                li 
+                    a(href!=category.url) !{category.name}
     
