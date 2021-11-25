@@ -7,17 +7,30 @@ block content
     form(action="/inventory/newItem", method="post")
         label(for="name") Name:
         br
-        input#name(type="text", name="name" placeholder="Item name")
+        input#name.form-input(type="text", name="name" placeholder="Item name" value=(data ? data.name : ''))
         br
         br
         label(for="description") Description:
         br
-        input#description(type="text", name="description" placeholder="Description of an item")
+        input#description.form-input(type="text", name="description" placeholder="Description of an item" value=(data ? data.description : ''))
         br
         br
         label(for="price") Price:
         br
-        input#price(type="number", name="price" placeholder="Price (e.g. 42.99)")
+        input#price.form-input(name="price" placeholder="Price (e.g. 42.99)" value=(data ? data.price : ''))
         br
         br
-        input(type="submit", value="Submit")
+        laber(for="category") Category:
+        br
+        each category in categories
+            input#category(type="checkbox", name="category" value=(category._id))
+            | !{category.name}
+            br
+        br
+        input.btn(type="submit", value="Submit")
+
+    if errors
+        p Errors:
+        ul 
+            each error in errors
+                li !{error.msg}
