@@ -1,0 +1,15 @@
+extends layout 
+
+block content 
+
+    h1!= title 
+
+    h2!= category.name
+
+    if items.length === 0
+        p There are no items in this category.
+    else
+    ul
+        each item in items 
+            li 
+                a(href!=item.url) !{item.name}

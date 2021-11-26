@@ -1,0 +1,19 @@
+extends layout 
+
+block content 
+    h1!= title 
+    h2 Create New Category
+
+    form(action="/inventory/newCategory", method="post")
+            label(for="name") Name:
+            br
+            input#name.form-input(type="text", name="name" placeholder="Category name" required)
+            br
+            br
+            input.btn(type="submit", value="Submit")
+
+    if errors
+        p Errors:
+        ul 
+            each error in errors
+                li !{error.msg}

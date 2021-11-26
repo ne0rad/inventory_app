@@ -14,6 +14,7 @@ exports.all_items = function (req, res, next) {
 
 exports.new_item_get = function (req, res, next) {
     Category.find({})
+        .sort({name: 1})
         .exec(function (err, result) {
             if (err) return next(err);
             res.render('new_item', { title: 'New Item', categories: result });
@@ -71,7 +72,11 @@ exports.item_details = function (req, res, next) {
     Item.findById(req.params.id)
         .populate('category')
         .exec(function (err, results) {
-            if (err) { return next(err); }
+            if (err) { 
+                var err = new Error('Item not found');
+                err.status = 404;
+                return next(err);
+             }
             if (results == null) { // No results.
                 var err = new Error('Item not found');
                 err.status = 404;
