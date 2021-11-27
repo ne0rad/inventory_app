@@ -13,7 +13,7 @@ exports.index = function (req, res) {
             Category.countDocuments({}, callback);
         }
     }, function (err, results) {
-        res.render('index', { title: 'Inventory Managment Tool', error: err, data: results });
+        res.render('index', { title: 'Inventory Managment System', error: err, data: results });
     });
 
 };

@@ -1,0 +1,26 @@
+extends layout 
+
+block content 
+    h1!= title 
+    h2 Create New Stock
+
+    form(action="/inventory/newStock", method="post")
+            laber(for="item") Item:
+            br
+            select#item.form-select(name="item")
+                each item in items
+                    option(value!=item._id) !{item.name}
+            br
+            br
+            label(for="count") Number of items:
+            br
+            input#count.form-input(type="number", name="count" placeholder="Item count" required)
+            br
+            br
+            input.btn(type="submit", value="Submit")
+
+    if errors
+        p Errors:
+        ul 
+            each error in errors
+                li !{error.msg}

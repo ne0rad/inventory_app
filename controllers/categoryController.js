@@ -13,24 +13,6 @@ exports.all_categories = function (req, res, next) {
     });
 };
 
-// exports.category_details = function (req, res, next) {
-//     Item.find({ category: { "$in": [req.params.id] } })
-//         .sort({ name: 1 })
-//         .exec(function (err, result) {
-//             if (err) {
-//                 var err = new Error('Category not found');
-//                 err.status = 404;
-//                 return next(err);
-//             }
-//             if (result == null) {
-//                 var err = new Error('Category not found');
-//                 err.status = 404;
-//                 return next(err);
-//             }
-//             res.render('category_details', { title: 'Category Details', data: result });
-//         });
-// }
-
 exports.category_details = function (req, res, next) {
 
     async.parallel({
