@@ -11,3 +11,7 @@ block content
             a(href!=category.url) !{category.name}
             if index < item.category.length - 1
                 |, 
+    br
+    a(href='/inventory/updateItem/' + item._id) Update
+    |  | 
+    a(href='/inventory/deleteItem/' + item._id) Delete

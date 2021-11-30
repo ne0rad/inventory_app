@@ -9,7 +9,12 @@ block content
     if items.length === 0
         p There are no items in this category.
     else
-    ul
-        each item in items 
-            li 
-                a(href!=item.url) !{item.name}
+        ul
+            each item in items 
+                li 
+                    a(href!=item.url) !{item.name}
+                    |  (£!{item.price})
+        br
+        a(href='/inventory/updateCategory/' + category._id) Update
+        |  | 
+        a(href='/inventory/deleteCategory/' + category._id) Delete
