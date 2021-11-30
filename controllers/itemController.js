@@ -83,6 +83,6 @@ exports.item_details = function (req, res, next) {
                 return next(err);
             }
             // Successful, so render.
-            res.render('item_details', { title: results.name, item: results });
+            res.render('item_details', { title: 'Item Details', item: results });
         });
 }

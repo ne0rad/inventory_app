@@ -26,7 +26,7 @@ exports.stock_details = function (req, res, next) {
                 err.status = 404;
                 return next(err);
             }
-            res.render('stock_details', {title: result.item.name, data: result});
+            res.render('stock_details', {title: 'Stock Details', data: result});
         })
 }
 
