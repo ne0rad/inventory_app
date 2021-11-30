@@ -3,11 +3,13 @@ extends layout
 block content 
 
     h1!= title
+    h2!= data.item.name
 
     if error 
         p Error getting DB information
     else 
-        p #[strong Description:] !{data.item.description}
+        p #[strong Item: ]
+            a(href!=data.item.url) !{data.item.name}
         p #[strong Price:] £!{data.item.price}
         p #[strong Stock count:] !{data.count}
         br
