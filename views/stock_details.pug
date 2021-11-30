@@ -1,0 +1,16 @@
+extends layout 
+
+block content 
+
+    h1!= title
+
+    if error 
+        p Error getting DB information
+    else 
+        p #[strong Description:] !{data.item.description}
+        p #[strong Price:] £!{data.item.price}
+        p #[strong Stock count:] !{data.count}
+        br
+        a(href='/inventory/updateStock/' + data._id) Update
+        |  | 
+        a(href='/inventory/deleteStock/' + data._id) Delete
