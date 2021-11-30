@@ -4,12 +4,30 @@ var Stock = require('../models/stock');
 var async = require('async');
 const { body, validationResult } = require('express-validator');
 
-exports.all_stock = function (req, res) {
-    res.send('Not implemented yet');
-}
+exports.all_stock = function (req, res, next) {
+    Stock.find({})
+        .populate('item')
+        .exec(function (err, result) {
+            res.render('all_stock', { title: 'In-Stock', error: err, data: result });
+        });
+};
 
-exports.stock_details = function (req, res) {
-    res.send('Not implemented yet');
+exports.stock_details = function (req, res, next) {
+    Stock.findById(req.params.id)
+        .populate('item')
+        .exec(function(err, result){
+            if (err) { 
+                var err = new Error('Stock not found');
+                err.status = 404;
+                return next(err);
+             }
+            if (result == null) { // No results.
+                var err = new Error('Stock not found');
+                err.status = 404;
+                return next(err);
+            }
+            res.render('stock_details', {title: result.item.name, data: result});
+        })
 }
 
 exports.new_stock_get = function (req, res) {
