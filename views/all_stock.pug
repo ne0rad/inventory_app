@@ -1,0 +1,15 @@
+extends layout 
+
+block content 
+
+    h1!= title 
+    h2 All In-Stock items 
+
+    if error
+        p Error getting db entries 
+    else 
+        ul
+            each stock in data 
+                li 
+                    a(href!=stock.url) !{stock.item.name}
+                    |  (!{stock.count})
