@@ -82,6 +82,13 @@ li {
   background-color: #0496f7;
 }
 
+.red {
+  background-color: #ca2525;
+}
+.red:hover {
+  background-color: #f33232;
+}
+
 .form-input {
   width: 200px;
   font-family: sans-serif;
