@@ -1,0 +1,25 @@
+extends layout 
+
+block content 
+
+    h1!= title 
+
+    form(action="/inventory/updateStock/" + stock._id, method="post")
+            laber(for="item") Item:
+            br
+            select#item.form-select(name="item")
+                option(value!=stock.item._id) !{stock.item.name}
+            br
+            br
+            label(for="count") Number of items:
+            br
+            input#count.form-input(type="number", name="count" placeholder="Item count" value!=stock.count required)
+            br
+            br
+            input.btn(type="submit", value="Submit")
+
+    if errors
+        p Errors:
+        ul 
+            each error in errors
+                li !{error.msg}

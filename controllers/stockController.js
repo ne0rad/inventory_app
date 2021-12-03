@@ -94,3 +94,36 @@ exports.delete_stock_post = function (req, res, next) {
             res.redirect('/inventory/stock');
         })
 }
+
+
+exports.update_stock_get = function (req, res, next) {
+    Stock.findById(req.params.id)
+        .populate('item')
+        .exec(function (err, stock) {
+            if (err) { return next(err) }
+            res.render('update_stock', { title: 'Update ' + stock.item.name + ' stock', stock: stock })
+        })
+}
+
+exports.update_stock_post = [
+    body('item', 'You must choose and item.').trim().isLength({ min: 1 }).escape(),
+    body('count', 'Valid item count required (1-1000).').trim().isInt({ min: 1, max: 1000 }).escape(),
+    (req, res, next) => {
+        const errors = validationResult(req);
+
+        if(!errors.isEmpty()) {
+            Stock.findById(req.params.id)
+                .populate('item')
+                .exec(function(err, stock){
+                    if(err) {return next(err)}
+                    res.render('update_stock', {title: 'Update ' + stock.item.name + ' stock', errors: errors.array(), stock: stock});
+                })
+        } else {
+            Stock.findByIdAndUpdate(req.params.id, {count: req.body.count})
+                .exec(function(err) {
+                    if(err) { return next(err)}
+                    res.redirect('/inventory/stock/' + req.params.id);
+                })
+        }
+    }
+]

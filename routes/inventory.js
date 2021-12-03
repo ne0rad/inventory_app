@@ -24,5 +24,7 @@ router.get('/newStock', stockController.new_stock_get);
 router.post('/newStock', stockController.new_stock_post);
 router.get('/deleteStock/:id', stockController.delete_stock_get);
 router.post('/deleteStock/:id', stockController.delete_stock_post);
+router.get('/updateStock/:id', stockController.update_stock_get);
+router.post('/updateStock/:id', stockController.update_stock_post);
 
 module.exports = router;
