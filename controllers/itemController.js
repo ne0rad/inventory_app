@@ -96,19 +96,87 @@ exports.delete_item_get = function (req, res, next) {
                 .populate('item')
                 .exec(function (err, stock) {
                     if (err) { return next(err) }
-                    if(stock) {
-                        res.render('delete_item', {title: 'Delete item ' + item.name, item: item, stock: stock});
+                    if (stock) {
+                        res.render('delete_item', { title: 'Delete item ' + item.name, item: item, stock: stock });
                     } else {
-                        res.render('delete_item', {title: 'Delete item ' + item.name, item: item, stock: false});
+                        res.render('delete_item', { title: 'Delete item ' + item.name, item: item, stock: false });
                     }
                 });
         });
 }
 
 exports.delete_item_post = function (req, res, next) {
-    Item.remove({_id: req.body.id})
-        .exec(function(err) {
-            if(err) { return next(err) }
+    Item.remove({ _id: req.body.id })
+        .exec(function (err) {
+            if (err) { return next(err) }
             res.redirect('/inventory/items');
         });
 }
+
+exports.update_item_get = function (req, res, next) {
+    async.parallel(
+        {
+            item: function (callback) {
+                Item.findById(req.params.id, callback);
+            },
+            categories: function (callback) {
+                Category.find({}, callback);
+            }
+        },
+        function (err, result) {
+            if (err) { return next(err) }
+            res.render('update_item', { title: 'Update item ' + result.item.name, item: result.item, categories: result.categories });
+        }
+    )
+}
+
+exports.update_item_post = [
+    // Convert the category to an array.
+    (req, res, next) => {
+        if (!(req.body.category instanceof Array)) {
+            if (typeof req.body.category === 'undefined')
+                req.body.category = [];
+            else
+                req.body.category = new Array(req.body.category);
+        }
+        next();
+    },
+
+    body('name', 'Item name required').trim().isLength({ min: 1 }).escape(),
+    body('description', 'Description required').trim().isLength({ min: 1 }).escape(),
+    body('price', 'Price required').trim().isLength({ min: 1 }).escape(),
+    body('price', 'Price has to be a number').isNumeric(),
+    body('category', 'At least one category required').isLength({ min: 1 }),
+    body('category.*').escape(),
+    (req, res, next) => {
+        const errors = validationResult(req);
+
+        if (!errors.isEmpty()) {
+            async.parallel(
+                {
+                    item: function (callback) {
+                        Item.findById(req.params.id, callback);
+                    },
+                    categories: function (callback) {
+                        Category.find({}, callback);
+                    }
+                },
+                function (err, results) {
+                    if (err) { return next(err) }
+                    res.render('update_item', { title: 'Update item ' + results.item.name, item: results.item, categories: results.categories, errors: errors.array() });
+                }
+            )
+        } else {
+            Item.findByIdAndUpdate(req.params.id, {
+                'name': req.body.name,
+                'description': req.body.description,
+                'price': req.body.price,
+                'category': req.body.category
+            })
+                .exec(function (err) {
+                    if (err) { return next(err) }
+                    res.redirect('/inventory/item/' + req.params.id);
+                })
+        }
+    }
+]

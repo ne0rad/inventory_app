@@ -1,0 +1,36 @@
+extends layout
+
+block content 
+    h1=title 
+    h2 Create New Item 
+
+    form(action="/inventory/updateItem/" + item._id method="post")
+        label(for="name") Name:
+        br
+        input#name.form-input(type="text" name="name" placeholder="Item name" value=(item ? item.name : ''))
+        br
+        br
+        label(for="description") Description:
+        br
+        input#description.form-input(type="text" name="description" placeholder="Description of an item" value=(item ? item.description : ''))
+        br
+        br
+        label(for="price") Price:
+        br
+        input#price.form-input(name="price" placeholder="Price (e.g. 42.99)" value=(item ? item.price : ''))
+        br
+        br
+        laber(for="category") Category:
+        br
+        each category in categories
+            input#category(type="checkbox" name="category" value=(category._id) checked=(item.category.indexOf(category._id) === -1 ? false: true))
+            | !{category.name}
+            br
+        br
+        input.btn(type="submit" value="Submit")
+
+    if errors
+        p Errors:
+        ul 
+            each error in errors
+                li !{error.msg}

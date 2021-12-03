@@ -17,6 +17,8 @@ router.post('/newItem', itemController.new_item_post);
 router.get('/item/:id', itemController.item_details);
 router.get('/deleteItem/:id', itemController.delete_item_get);
 router.post('/deleteItem/:id', itemController.delete_item_post);
+router.get('/updateItem/:id', itemController.update_item_get);
+router.post('/updateItem/:id', itemController.update_item_post);
 
 router.get('/stock/:id', stockController.stock_details);
 router.get('/stock', stockController.all_stock);
