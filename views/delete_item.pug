@@ -5,8 +5,8 @@ block content
     h1!= title 
 
     if stock
-        h2 You need to delete this in-stock item first: 
-        br
+        h2 Item must have no stock to be deleted.
+        h3 In-stock item:
         a(href!=stock.url) !{item.name}
         |  (!{stock.count})
     else 
