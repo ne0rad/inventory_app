@@ -15,18 +15,18 @@ exports.all_stock = function (req, res, next) {
 exports.stock_details = function (req, res, next) {
     Stock.findById(req.params.id)
         .populate('item')
-        .exec(function(err, result){
-            if (err) { 
+        .exec(function (err, result) {
+            if (err) {
                 var err = new Error('Stock not found');
                 err.status = 404;
                 return next(err);
-             }
+            }
             if (result == null) { // No results.
                 var err = new Error('Stock not found');
                 err.status = 404;
                 return next(err);
             }
-            res.render('stock_details', {title: 'Stock Details', data: result});
+            res.render('stock_details', { title: 'Stock Details', data: result });
         })
 }
 
@@ -77,3 +77,20 @@ exports.new_stock_post = [
         }
     }
 ];
+
+exports.delete_stock_get = function (req, res, next) {
+    Stock.findById(req.params.id)
+        .populate('item')
+        .exec(function (err, stock) {
+            if (err) { return next(err) }
+            res.render('delete_stock', { title: 'Delete in-stock for ' + stock.item.name, stock: stock })
+        })
+}
+
+exports.delete_stock_post = function (req, res, next) {
+    Stock.remove({ _id: req.body.id })
+        .exec(function (err) {
+            if (err) { return next(err) }
+            res.redirect('/inventory/stock');
+        })
+}

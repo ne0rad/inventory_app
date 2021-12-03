@@ -1,0 +1,10 @@
+extends layout 
+
+block content 
+
+    h1!= title 
+
+    h2 Are you sure you want to delete this item?
+        form(action="/inventory/deleteStock/" + stock._id, method="post")
+            input(type="hidden" name="id" value!=stock._id)
+            button.btn.red(type="submit") Delete
