@@ -1,7 +1,8 @@
 var Item = require('../models/item');
 var Category = require('../models/category');
+var Stock = require('../models/stock');
 var async = require('async');
-const { body, validationResult } = require('express-validator');
+const { body, validationResult, sanitizeCookie } = require('express-validator');
 
 exports.all_items = function (req, res, next) {
     Item.find({})
@@ -14,7 +15,7 @@ exports.all_items = function (req, res, next) {
 
 exports.new_item_get = function (req, res, next) {
     Category.find({})
-        .sort({name: 1})
+        .sort({ name: 1 })
         .exec(function (err, result) {
             if (err) return next(err);
             res.render('new_item', { title: 'New Item', categories: result });
@@ -72,11 +73,11 @@ exports.item_details = function (req, res, next) {
     Item.findById(req.params.id)
         .populate('category')
         .exec(function (err, results) {
-            if (err) { 
+            if (err) {
                 var err = new Error('Item not found');
                 err.status = 404;
                 return next(err);
-             }
+            }
             if (results == null) { // No results.
                 var err = new Error('Item not found');
                 err.status = 404;
@@ -84,5 +85,30 @@ exports.item_details = function (req, res, next) {
             }
             // Successful, so render.
             res.render('item_details', { title: 'Item Details', item: results });
+        });
+}
+
+exports.delete_item_get = function (req, res, next) {
+    Item.findById(req.params.id)
+        .exec(function (err, item) {
+            if (err) { return next(err) }
+            Stock.findOne({ item: req.params.id })
+                .populate('item')
+                .exec(function (err, stock) {
+                    if (err) { return next(err) }
+                    if(stock) {
+                        res.render('delete_item', {title: 'Delete item ' + item.name, item: item, stock: stock});
+                    } else {
+                        res.render('delete_item', {title: 'Delete item ' + item.name, item: item, stock: false});
+                    }
+                });
+        });
+}
+
+exports.delete_item_post = function (req, res, next) {
+    Item.remove({_id: req.body.id})
+        .exec(function(err) {
+            if(err) { return next(err) }
+            res.redirect('/inventory/items');
         });
 }

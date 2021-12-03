@@ -1,0 +1,16 @@
+extends layout 
+
+block content 
+
+    h1!= title 
+
+    if stock
+        h2 You need to delete this in-stock item first: 
+        br
+        a(href!=stock.url) !{item.name}
+        |  (!{stock.count})
+    else 
+        h2 Are you sure you want to delete this item?
+        form(action="/inventory/deleteItem/" + item._id, method="post")
+            input(type="hidden" name="id" value!=item._id)
+            button.btn.red(type="submit") Delete
