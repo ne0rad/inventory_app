@@ -98,3 +98,34 @@ exports.delete_category_post = function (req, res, next) {
             res.redirect('/inventory/categories');
         });
 }
+
+exports.update_category_get = function (req, res, next) {
+    Category.findById(req.params.id)
+        .exec(function (err, category) {
+            if(err) { return next(err); }
+            res.render('update_category', {title: 'Update ' + category.name + ' category', category: category});
+        })
+}
+
+exports.update_category_post = [
+    body('name', 'Category name required.').trim().isLength({min: 1}).escape(),
+    (req, res, next) => {
+        const errors = validationResult(req);
+
+        if(!errors.isEmpty()) {
+            Category.findById(req.params.id)
+                .exec(function(err, category) {
+                    if(err) { return next(err); }
+                    res.render('update_category', {title: 'Update ' + category.name + ' category', category: category});
+                })
+        } else {
+            Category.findByIdAndUpdate(req.params.id, {
+                name: req.body.name
+            })
+                .exec(function(err) {
+                    if(err) {return next(err)}
+                    res.redirect('/inventory/category/' + req.params.id);
+                })
+        }
+    }
+]
