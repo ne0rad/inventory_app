@@ -73,3 +73,28 @@ exports.new_category_post = [
         }
     }
 ];
+
+exports.delete_category_get = function (req, res, next) {
+    Category.findById(req.params.id)
+        .exec(function (err, result) {
+            if (err) { return next(err); }
+            if (result === null) { return next(err); }
+            Item.find({ category: { "$in": [req.params.id] } })
+                .exec(function (err, items) {
+                    if (err) { return next(err) }
+                    if (items.length < 1) {
+                        res.render('delete_category', { title: 'Delete ' + result.name, category: result });
+                    } else {
+                        res.render('delete_category', { title: 'Delete ' + result.name, items: items });
+                    }
+                });
+        })
+}
+
+exports.delete_category_post = function (req, res, next) {
+    Category.remove({ _id: req.body.id })
+        .exec(function (err) {
+            if (err) { return next(err) }
+            res.redirect('/inventory/categories');
+        });
+}
