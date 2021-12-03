@@ -10,6 +10,8 @@ router.get('/newCategory', categoryController.new_category_get);
 router.post('/newCategory', categoryController.new_category_post);
 router.get('/deleteCategory/:id', categoryController.delete_category_get);
 router.post('/deleteCategory/:id', categoryController.delete_category_post);
+router.get('/updateCategory/:id', categoryController.update_category_get);
+router.post('/updateCategory/:id', categoryController.update_category_post);
 
 router.get('/items', itemController.all_items);
 router.get('/newItem', itemController.new_item_get);
