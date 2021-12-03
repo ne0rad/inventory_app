@@ -10,7 +10,6 @@ block content
     else 
         p #[strong Item: ]
             a(href!=data.item.url) !{data.item.name}
-        p #[strong Price:] £!{data.item.price}
         p #[strong Stock count:] !{data.count}
         br
         a(href='/inventory/updateStock/' + data._id) Update
